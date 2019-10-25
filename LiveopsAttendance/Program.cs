@@ -19,11 +19,8 @@ namespace LiveopsAttendance
             ///if scheduledAgents.line == present Agents is truthy do nothing.
             ///else if scheduled agents.line != present agents console.Readline in tbAbsentAgents
             Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
-
-
-            
+            Application.SetCompatibleTextRenderingDefault(false);  
+            Application.Run(new MainForm());            
         }
     }
 }
