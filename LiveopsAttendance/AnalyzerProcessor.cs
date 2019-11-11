@@ -10,8 +10,31 @@ namespace LiveopsAttendance
 {
     class AnalyzerProcessor
     {
+        public List<Agent> GetAgents(string text, bool scheduledAgents = true)
+        {
+            var agentStrings = text.Split("\r\n".ToArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
+            if (!scheduledAgents)
+            {
+                agentStrings = CreateAgentLines(agentStrings.ToArray());
+            }
+            //This currently will return an agent name (line 1) then agent status (line 2) and repeat
+            //var textToArray = CreateAgentLines(text.Split("\r\n".ToArray(), StringSplitOptions.RemoveEmptyEntries));
+            var results = new List<Agent>();
+
+            //create a method that makes this next line usable - convert the array of strings into a concantinated array of strings
+
+
+            foreach (var line in agentStrings)
+            {
+                results.Add(ParseLine(line));
+            }
+            
+            return results;
+        }
+        //line = "Appolonia\tBarnett\t On call"
         private Agent ParseLine(string line)
         {
+            line = line.Replace('\t', ' ');
             var parts = line.Split(' ');
             var status = string.Join("", parts.Where((s, i) => i > 1).Select(s => s).ToArray());
             return new Agent
@@ -20,17 +43,18 @@ namespace LiveopsAttendance
                 Status = status.Length > 0 ? (Status)Enum.Parse(typeof(Status), status, true) : Status.Unknown
             };
         }
-
-        public List<Agent> GetAgents(string text)
+        private List<string> CreateAgentLines(string[] agents)
         {
-            var textToArray = text.Split("\r\n".ToArray(), StringSplitOptions.RemoveEmptyEntries);
-            var results = new List<Agent>();
-            foreach(var line in textToArray)
+            //Take whole entry, return [0][1] (firstName lastName + status) "value i" + " " + "value ii" + 1
+            var wholeAgent = new List<string>();
+            for (int i = 0; i < agents.Length; i = i + 2)
             {
-                results.Add(ParseLine(line));
+                var concatAgent = $"{agents[i]} {agents[i + 1]}";
+                wholeAgent.Add(concatAgent);
             }
-            return results;
+            return wholeAgent;       
         }
+
 
         public List<string> GetStringArray(string textBox)
         {
@@ -38,14 +62,7 @@ namespace LiveopsAttendance
             List<string> agentsScheduled = new List<string>();
             foreach(string line in textToArray)
             {
-                //if (line == "")
-                //{
-                //    continue;
-                //}
-                
-             
-                agentsScheduled.Add(line);
-                
+                agentsScheduled.Add(line);                
             }
             return agentsScheduled;
         }

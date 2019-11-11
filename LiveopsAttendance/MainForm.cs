@@ -40,15 +40,11 @@ namespace LiveopsAttendance
         {
             AnalyzerProcessor ap = new AnalyzerProcessor();
             var scheduledAgents = ap.GetAgents(tbScheduledAgents.Text);
-            var presentAgents = ap.GetAgents(tbAgentsPresent.Text);
+            var presentAgents = ap.GetAgents(tbAgentsPresent.Text, false);
 
             var uncommitted = presentAgents.Where(p => !scheduledAgents.Any(s => s.Name == p.Name) && p.Status != Status.OnCall);
             var absent = scheduledAgents.Where(s => !presentAgents.Any(p => p.Name == s.Name));
 
-            //var agentsScheduled = ap.GetStringArray(tbScheduledAgents.Text);
-            //var agentsPresent = ap.GetStringArray(tbAgentsPresent.Text);
-            //var isAbsent = ap.IsAbsent(agentsScheduled, agentsPresent);
-            //var isUncommitted = ap.IsUncommitted(agentsScheduled, agentsPresent);
             tbAgentsAbsent.Text = ap.DisplayAgents(absent.Select(a => a.Name).ToList());
             tbUncommitted.Text = ap.DisplayAgents(uncommitted.Select(a => a.Name).ToList());
          
