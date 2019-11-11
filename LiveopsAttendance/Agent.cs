@@ -14,9 +14,25 @@ namespace LiveopsAttendance
 
     public enum Status
     {
-        Unknown,
-        OnCall,
-        Available,
-        Hold
+        Project,
+        Research,
+        SystemIssues,
+        Training,
+        BackOfficePrep,
+        MicrophoneUnavailable,
+        Meeting,
+        Break,
+        Coaching,
+        CustomerFollowUp,
+        ExternalEmailSupport,
+        Lunch,
+        ACWExtended,
+        Offline,
+        AgentAssist,
+        MissedCallAgent,
+        Callincoming,
+        Oncall,
+        Available
+        
     }
 }
